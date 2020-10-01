@@ -70,9 +70,13 @@ async function Question() {
         }
     })
     const Question = mongoose.model('Question', questionSchema);
-    // await Question.createCollection();
+    try {
+        await Question.createCollection();
+    } catch (error) {
+        console.log(error.message);
+    }
     return Question;
 }
 
 export default Question();
-// module.exports = mongoose.model('Question', questionSchema)
+
