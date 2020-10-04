@@ -9,12 +9,17 @@
 //         type: String,
 //         required: true
 //     },
+//     role: {
+//         type: String,
+//         required: true,
+//         default: 'player'
+//     },
 //     avatar: {},
 //     registrationDate: {
 //         type: Date,
 //         required: true,
 //         default: Date.now
 //     }
-// })
+// });
 //
-// module.exports = mongoose.model('User', userSchema)
+// module.exports = mongoose.model('User', userSchema);

@@ -4,9 +4,20 @@ export default {
     async getAllQuestions() {
         return (await Question).find({});
     },
+    async getAllModeratedQuestions() {
+        return (await Question).find({
+            isModerated: true
+        });
+    },
+    async getAllUnModeratedQuestions() {
+        return (await Question).find({
+            isModerated: false
+        });
+    },
+
     async createNewQuestion(textOfQuestion, firstAnswer, corrFirstAnswer,
                             secAnswer, corrSecAnswer, thirdAnswer, corrThirdAnswer,
-                            fourthAnswer, corrFourthAnswer, categ) {
+                            fourthAnswer, corrFourthAnswer, categ, story) {
         const question = new (await Question)({
             description: textOfQuestion,
             alternatives: [
@@ -27,8 +38,13 @@ export default {
                     isCorrect: corrFourthAnswer
                 }
             ],
-            category: categ
+            category: categ,
+            extendedAnswer: story
         });
         return await question.save();
+    },
+
+    async deleteQuestion(id) {
+        return (await Question).findOneAndRemove(id);
     }
 }

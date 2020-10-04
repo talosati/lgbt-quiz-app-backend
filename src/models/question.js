@@ -67,6 +67,10 @@ async function Question() {
             type: String,
             required: true,
             default: 'nobody'
+        },
+        extendedAnswer: {
+            type: String,
+            required: true
         }
     })
     const Question = mongoose.model('Question', questionSchema);

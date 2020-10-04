@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "## Steps",
   "main": "index.js",
+  "module": "main.js",
   "type": "module",
   "scripts": {
-    "start": "node ./index.js",
+    "lint": "eslint . --ext .js",
+    "start": "nodemon --exec babel-node ./index.js",
     "test": "jest --watchAll"
   },
   "repository": {
