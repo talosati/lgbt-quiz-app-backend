@@ -1,9 +1,17 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import questionController from '../controllers/questionController.js';
 
 const router = express.Router();
 const jsonParser = bodyParser.json();
+
+router.use(
+    cors({
+        origin: process.env.CORS_ORIGIN,
+    })
+);
+router.use(express.json());
 
 router.get('/', questionController.getAll);
 router.get('/moderated', questionController.getModerated);
