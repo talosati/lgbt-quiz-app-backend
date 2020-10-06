@@ -2,24 +2,17 @@ import QuestionService from '../services/QuestionService.js';
 
 export default {
     async getAll(req, res) {
-        try {
-            const data = await QuestionService.build().getAllQuestions();
-            res.status(200).json(data);
-        } catch (error) {
-            res.status(404).json(error.message);
-        }
+        return await this.handleGet(async s => await s.getAllQuestions());
     },
     async getModerated(req, res) {
-        try {
-            const data = await QuestionService.build().getAllModeratedQuestions();
-            res.status(200).json(data);
-        } catch (error) {
-            res.status(404).json(error.message);
-        }
+        return await this.handleGet(async s => await s.getAllModeratedQuestions());
     },
     async getUnModerated(req, res) {
+        return await this.handleGet(async s => await s.getAllUnModeratedQuestions());
+    },
+    async handleGet(req, res, callback) {
         try {
-            const data = await QuestionService.build().getAllUnModeratedQuestions();
+            const data =  await callback(QuestionService.build())
             res.status(200).json(data);
         } catch (error) {
             res.status(404).json(error.message);

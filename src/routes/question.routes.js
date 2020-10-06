@@ -21,6 +21,6 @@ router.post('/', jsonParser, questionController.post);
 
 // router.put('/:id', questionController.put);
 
-router.delete('/:id', questionController.delete)
+router.delete('/:id', questionController.delete);
 
 export default router;
