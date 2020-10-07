@@ -72,7 +72,7 @@ async function Question() {
             type: String,
             required: true
         }
-    })
+    });
     const Question = mongoose.model('Question', questionSchema);
     try {
         await Question.createCollection();

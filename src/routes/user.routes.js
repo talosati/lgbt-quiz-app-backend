@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import userController from '../controllers/userController';
+import userController from '../controllers/userController.js';
 
 const router = express.Router();
 const jsonParser = bodyParser.json();

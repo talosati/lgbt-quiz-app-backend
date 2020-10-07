@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import userRepository from '../repositories/userRepository';
+import userRepository from '../repositories/userRepository.js';
 
 export default class UserService {
     constructor(userRepo) {
@@ -23,7 +23,7 @@ export default class UserService {
     }
 
     async createNewUser(reqBody) {
-        const hashedPassword = await bcrypt.hash(reqBody.password, process.env.SALT);
+        const hashedPassword = await bcrypt.hash(reqBody.password, parseInt(process.env.SALT, 10));
         return await this.userRepository.createNewUser(
             reqBody.email,
             reqBody.username,
