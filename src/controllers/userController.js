@@ -6,7 +6,7 @@ export default {
             const data = await UserService.build().getAllUsers();
             res.status(200).json(data);
         } catch (error) {
-            res.status(500).json(error.message);
+            res.status(error.httpStatusCode).json(error.message);
         }
     },
     async getAdmins(req, res) {
@@ -14,7 +14,7 @@ export default {
             const data = await UserService.build().getAllAdmins();
             res.status(200).json(data);
         } catch (error) {
-            res.status(500).json(error.message);
+            res.status(error.httpStatusCode).json(error.message);
         }
     },
     async getModerators(req, res) {
@@ -22,7 +22,7 @@ export default {
             const data = await UserService.build().getAllModerators();
             res.status(200).json(data);
         } catch (error) {
-            res.status(500).json(error.message);
+            res.status(error.httpStatusCode).json(error.message);
         }
     },
     async getPlayers(req, res) {
@@ -30,7 +30,7 @@ export default {
             const data = await UserService.build().getAllPlayers();
             res.status(200).json(data);
         } catch (error) {
-            res.status(500).json(error.message);
+            res.status(error.httpStatusCode).json(error.message);
         }
     },
 
@@ -39,7 +39,7 @@ export default {
             const data = await UserService.build().createNewUser(req.body);
             res.status(200).json(data);
         } catch (error) {
-            res.status(500).json(error.message);
+            res.status(error.httpStatusCode).json(error.message);
         }
     },
 
@@ -48,7 +48,7 @@ export default {
             await UserService.build().deleteUser(req.params.id);
             res.status(200).json('Deleted user');
         } catch (error) {
-            res.status(500).json(error.message);
+            res.status(error.httpStatusCode).json(error.message);
         }
     }
 }

@@ -1,5 +1,8 @@
 import bcrypt from 'bcrypt';
 import userRepository from '../repositories/userRepository.js';
+import validateRequestBody from './registerServiceValidator.js';
+import PropertyAlreadyExistsError from '../customErrors/PropertyAlreadyExistsError.js';
+import ItemDoesNotExistError from '../customErrors/ItemIsNotExistsError.js';
 
 export default class UserService {
     constructor(userRepo) {
@@ -7,22 +10,47 @@ export default class UserService {
     }
 
     async getAllUsers() {
-        return await this.userRepository.getAllUsers();
+        const foundUser = await this.userRepository.getAllUsers();
+        if (!foundUser.length) {
+            throw new ItemDoesNotExistError();
+        }
+        return foundUser;
     }
 
     async getAllAdmins() {
-        return await this.userRepository.getAllAdmins();
+        const foundUser = await this.userRepository.getAllAdmins();
+        if (!foundUser.length) {
+            throw new ItemDoesNotExistError();
+        }
+        return foundUser;
     }
 
     async getAllModerators() {
-        return await this.userRepository.getAllModerators();
+        const foundUser = await this.userRepository.getAllModerators();
+        if (!foundUser.length) {
+            throw new ItemDoesNotExistError();
+        }
+        return foundUser;
     }
 
     async getAllPlayers() {
-        return await this.userRepository.getAllPlayers();
+        const foundUser = await this.userRepository.getAllPlayers();
+        if (!foundUser.length) {
+            throw new ItemDoesNotExistError();
+        }
+        return foundUser;
     }
 
     async createNewUser(reqBody) {
+        validateRequestBody(reqBody);
+
+        const foundUser = await this.userRepository.getUserByUsername(
+            reqBody.username
+        );
+        if (foundUser.length) {
+            throw new PropertyAlreadyExistsError('Username');
+        }
+
         const hashedPassword = await bcrypt.hash(reqBody.password, parseInt(process.env.SALT, 10));
         return await this.userRepository.createNewUser(
             reqBody.email,
@@ -32,7 +60,11 @@ export default class UserService {
     }
 
     async deleteUser(id) {
-        return await this.userRepository.deleteUser(id);
+        const deletedUser = await this.userRepository.deleteUser(id);
+        if (!deletedUser.length) {
+            throw new ItemDoesNotExistError();
+        }
+        return deletedUser;
     }
 
     static build() {

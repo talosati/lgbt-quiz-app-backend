@@ -1,4 +1,5 @@
 import questionRepository from '../repositories/questionRepository.js';
+import ItemDoesNotExistError from '../customErrors/ItemIsNotExistsError.js';
 
 export default class QuestionService {
     constructor(questionRepo) {
@@ -6,15 +7,27 @@ export default class QuestionService {
     }
 
     async getAllQuestions() {
-        return await this.questionRepository.getAllQuestions();
+        const foundQuestion = await this.questionRepository.getAllQuestions();
+        if (!foundQuestion.length) {
+            throw new ItemDoesNotExistError();
+        }
+        return foundQuestion;
     }
 
     async getAllModeratedQuestions() {
-        return await this.questionRepository.getAllModeratedQuestions();
+        const foundQuestion = await this.questionRepository.getAllModeratedQuestions();
+        if (!foundQuestion.length) {
+            throw new ItemDoesNotExistError();
+        }
+        return foundQuestion;
     }
 
     async getAllUnModeratedQuestions() {
-        return await this.questionRepository.getAllUnModeratedQuestions();
+        const foundQuestion = await this.questionRepository.getAllUnModeratedQuestions();
+        if (!foundQuestion.length) {
+            throw new ItemDoesNotExistError();
+        }
+        return foundQuestion;
     }
 
     async createNewQuestion(reqBody) {
@@ -34,7 +47,11 @@ export default class QuestionService {
     }
 
     async deleteQuestion(id) {
-        return await this.questionRepository.deleteQuestion(id);
+        const foundQuestion = await this.questionRepository.deleteQuestion(id);
+        if (!foundQuestion.length) {
+            throw new ItemDoesNotExistError();
+        }
+        return foundQuestion;
     }
 
     static build() {
