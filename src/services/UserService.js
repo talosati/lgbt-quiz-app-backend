@@ -36,7 +36,11 @@ export default class UserService {
     }
 
     async getAllPlayers() {
-        const foundUser = await this.userRepository.getAllPlayers();
+        return this.tryWith(async (repository) => { return await repository.getAllPlayers()})
+    }
+
+    async tryWith(callback) {
+        const foundUser = await callback(this.userRepository);
         if (!foundUser.length) {
             throw new ItemDoesNotExistError();
         }
