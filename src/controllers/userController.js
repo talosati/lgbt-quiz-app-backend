@@ -34,9 +34,18 @@ export default {
         }
     },
 
-    async post(req, res) {
+    async register(req, res) {
         try {
             const data = await UserService.build().createNewUser(req.body);
+            res.status(200).json(data);
+        } catch (error) {
+            res.status(error.httpStatusCode).json(error.message);
+        }
+    },
+
+    async login(req, res) {
+        try {
+            const data = await UserService.build().logInUser(req.body);
             res.status(200).json(data);
         } catch (error) {
             res.status(error.httpStatusCode).json(error.message);

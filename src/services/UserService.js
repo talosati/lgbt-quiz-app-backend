@@ -1,8 +1,10 @@
 import bcrypt from 'bcrypt';
 import userRepository from '../repositories/userRepository.js';
-import validateRequestBody from './registerServiceValidator.js';
+import validateRegRequestBody from './registerServiceValidator.js';
+import validateLogRequestBody from './loginServiceValidator.js';
 import PropertyAlreadyExistsError from '../customErrors/PropertyAlreadyExistsError.js';
-import ItemDoesNotExistError from '../customErrors/ItemIsNotExistsError.js';
+import ItemDoesNotExistError from '../customErrors/ItemDoesNotExistError.js';
+import PropertyIsIncorrectError from '../customErrors/PropertyIsIncorrectError.js';
 
 export default class UserService {
     constructor(userRepo) {
@@ -42,7 +44,7 @@ export default class UserService {
     }
 
     async createNewUser(reqBody) {
-        validateRequestBody(reqBody);
+        validateRegRequestBody(reqBody);
 
         const foundUser = await this.userRepository.getUserByUsername(
             reqBody.username
@@ -59,8 +61,25 @@ export default class UserService {
         );
     }
 
+    async logInUser(reqBody) {
+        validateLogRequestBody(reqBody);
+
+        const foundUser = await this.userRepository.getUserByUsername(
+            reqBody.username
+        );
+        if (!foundUser.length) {
+            throw new ItemDoesNotExistError();
+        }
+
+        if (await bcrypt.compare(reqBody.password, foundUser[0].password)) {
+            return foundUser;
+        }
+        throw new PropertyIsIncorrectError('Password');
+    }
+
     async deleteUser(id) {
         const deletedUser = await this.userRepository.deleteUser(id);
+
         if (!deletedUser.length) {
             throw new ItemDoesNotExistError();
         }
@@ -71,3 +90,4 @@ export default class UserService {
         return new UserService(userRepository);
     }
 }
+

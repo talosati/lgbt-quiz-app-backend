@@ -1,5 +1,5 @@
 import questionRepository from '../repositories/questionRepository.js';
-import ItemDoesNotExistError from '../customErrors/ItemIsNotExistsError.js';
+import ItemDoesNotExistError from '../customErrors/ItemDoesNotExistError.js';
 
 export default class QuestionService {
     constructor(questionRepo) {

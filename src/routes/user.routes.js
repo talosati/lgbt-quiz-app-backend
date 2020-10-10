@@ -18,7 +18,8 @@ router.get('/admins', userController.getAdmins);
 router.get('/moderators', userController.getModerators);
 router.get('/players', userController.getPlayers);
 
-router.post('/', jsonParser, userController.post);
+router.post('/register', jsonParser, userController.register);
+router.post('/login', jsonParser, userController.login);
 
 // router.put('/:id', userController.put);
 
