@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
+import cors from 'cors';
 
 import system from './src/routes/system.routes.js';
 import user from './src/routes/user.routes.js';
@@ -15,6 +16,12 @@ db.once('open', () => console.log('Connected to Database'));
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+
+app.use(
+    cors({
+        origin: process.env.CORS_ORIGIN,
+    })
+);
 
 app.use('/', system);
 app.use('/users', user);
