@@ -55,7 +55,7 @@ export default {
     async delete(req, res) {
         try {
             await UserService.build().deleteUser(req.params.id);
-            res.status(200).json('Deleted user');
+            res.status(200).json('User successfully deleted');
         } catch (error) {
             res.status(error.httpStatusCode).json(error.message);
         }

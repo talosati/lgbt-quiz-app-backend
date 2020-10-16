@@ -20,19 +20,19 @@ export default class UserService {
     }
 
     async getAllUsers() {
-        return this.tryWith(async (repository) => { return await repository.getAllUsers()})
+        return this.tryWith(async (repository) => { return await repository.getAllUsers()});
     }
 
     async getAllAdmins() {
-        return this.tryWith(async (repository) => { return await repository.getAllAdmins()})
+        return this.tryWith(async (repository) => { return await repository.getAllAdmins()});
     }
 
     async getAllModerators() {
-        return this.tryWith(async (repository) => { return await repository.getAllModerators()})
+        return this.tryWith(async (repository) => { return await repository.getAllModerators()});
     }
 
     async getAllPlayers() {
-        return this.tryWith(async (repository) => { return await repository.getAllPlayers()})
+        return this.tryWith(async (repository) => { return await repository.getAllPlayers()});
     }
 
     async createNewUser(reqBody) {

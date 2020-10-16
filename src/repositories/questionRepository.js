@@ -1,6 +1,11 @@
 import Question from '../models/question.js';
 
 export default {
+    async getQuestionById(id) {
+      return (await Question).find({
+          _id: id
+      })
+    },
     async getAllQuestions() {
         return (await Question).find({});
     },

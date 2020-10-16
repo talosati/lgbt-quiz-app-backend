@@ -6,28 +6,24 @@ export default class QuestionService {
         this.questionRepository = questionRepo;
     }
 
-    async getAllQuestions() {
-        const foundQuestion = await this.questionRepository.getAllQuestions();
+    async tryWith(callback) {
+        const foundQuestion = await callback(this.questionRepository);
         if (!foundQuestion.length) {
             throw new ItemDoesNotExistError();
         }
         return foundQuestion;
+    }
+
+    async getAllQuestions() {
+        return this.tryWith(async (repository) => { return await repository.getAllQuestions()});
     }
 
     async getAllModeratedQuestions() {
-        const foundQuestion = await this.questionRepository.getAllModeratedQuestions();
-        if (!foundQuestion.length) {
-            throw new ItemDoesNotExistError();
-        }
-        return foundQuestion;
+        return this.tryWith(async (repository) => { return await repository.getAllModeratedQuestions()});
     }
 
     async getAllUnModeratedQuestions() {
-        const foundQuestion = await this.questionRepository.getAllUnModeratedQuestions();
-        if (!foundQuestion.length) {
-            throw new ItemDoesNotExistError();
-        }
-        return foundQuestion;
+        return this.tryWith(async (repository) => { return await repository.getAllUnModeratedQuestions()});
     }
 
     async createNewQuestion(reqBody) {
@@ -47,11 +43,8 @@ export default class QuestionService {
     }
 
     async deleteQuestion(id) {
-        const foundQuestion = await this.questionRepository.deleteQuestion(id);
-        if (!foundQuestion.length) {
-            throw new ItemDoesNotExistError();
-        }
-        return foundQuestion;
+        await this.tryWith(async (repository) => {return await repository.getQuestionById(id)});
+        return this.questionRepository.deleteQuestion(id);
     }
 
     static build() {
