@@ -11,40 +11,28 @@ export default class UserService {
         this.userRepository = userRepo;
     }
 
-    async getAllUsers() {
-        const foundUser = await this.userRepository.getAllUsers();
-        if (!foundUser.length) {
-            throw new ItemDoesNotExistError();
-        }
-        return foundUser;
-    }
-
-    async getAllAdmins() {
-        const foundUser = await this.userRepository.getAllAdmins();
-        if (!foundUser.length) {
-            throw new ItemDoesNotExistError();
-        }
-        return foundUser;
-    }
-
-    async getAllModerators() {
-        const foundUser = await this.userRepository.getAllModerators();
-        if (!foundUser.length) {
-            throw new ItemDoesNotExistError();
-        }
-        return foundUser;
-    }
-
-    async getAllPlayers() {
-        return this.tryWith(async (repository) => { return await repository.getAllPlayers()})
-    }
-
     async tryWith(callback) {
         const foundUser = await callback(this.userRepository);
         if (!foundUser.length) {
             throw new ItemDoesNotExistError();
         }
         return foundUser;
+    }
+
+    async getAllUsers() {
+        return this.tryWith(async (repository) => { return await repository.getAllUsers()})
+    }
+
+    async getAllAdmins() {
+        return this.tryWith(async (repository) => { return await repository.getAllAdmins()})
+    }
+
+    async getAllModerators() {
+        return this.tryWith(async (repository) => { return await repository.getAllModerators()})
+    }
+
+    async getAllPlayers() {
+        return this.tryWith(async (repository) => { return await repository.getAllPlayers()})
     }
 
     async createNewUser(reqBody) {
@@ -68,12 +56,7 @@ export default class UserService {
     async logInUser(reqBody) {
         validateLogRequestBody(reqBody);
 
-        const foundUser = await this.userRepository.getUserByUsername(
-            reqBody.username
-        );
-        if (!foundUser.length) {
-            throw new ItemDoesNotExistError();
-        }
+        const foundUser = await this.tryWith(async (repository) => {return await repository.getUserByUsername(reqBody.username)});
 
         if (await bcrypt.compare(reqBody.password, foundUser[0].password)) {
             return foundUser;
@@ -82,12 +65,8 @@ export default class UserService {
     }
 
     async deleteUser(id) {
-        const deletedUser = await this.userRepository.deleteUser(id);
-
-        if (!deletedUser.length) {
-            throw new ItemDoesNotExistError();
-        }
-        return deletedUser;
+        await this.tryWith(async (repository) => {return await repository.getUserById(id)});
+        return this.userRepository.deleteUser(id);
     }
 
     static build() {

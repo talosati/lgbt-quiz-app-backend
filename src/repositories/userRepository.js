@@ -6,6 +6,11 @@ export default {
             username: username
         });
     },
+    async getUserById(id) {
+      return (await User).find({
+          _id: id
+      })
+    },
     async getAllUsers() {
         return (await User).find({});
     },
